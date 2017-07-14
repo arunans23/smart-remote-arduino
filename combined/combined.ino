@@ -22,6 +22,9 @@ void setup() {
   // Start the receiver 
 }
 
+char buff[20];
+int m = 0;
+
 
 void loop() {
   
@@ -34,6 +37,8 @@ void loop() {
      irrecv.resume(); // Receive the next value
      
   }
+
+  
   
   if(BTserial.available())
   {
@@ -48,11 +53,26 @@ void loop() {
       Serial.println(current);
     } else{
         if (current == 'S'){
+          
+        
+              
+           
+          if (daten=='\n'){
+            currentvalue = strtoul(buff, NULL, 16);
+            m = 0;
+            char buff[20];
           for (int i = 0; i < 3; i++) {
-            Serial.println(daten);
-            irsend.sendSony(daten, 12);
+            Serial.println(currentvalue, HEX);
+            irsend.sendSony(currentvalue, 12);
             delay(40);
           }
+            }
+
+           else {
+              buff[m] = daten;
+              m++;
+            }   
+            
          //5 second delay between each signal burst
       }
      }
